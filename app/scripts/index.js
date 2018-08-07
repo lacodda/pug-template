@@ -1,5 +1,6 @@
-import '../styles/main.scss';
-// import icons from '../images/icons.svg';
+import '../assets/styles/main.scss';
+/* eslint-disable-next-line */
+import lyrn from '../assets/images/lyrn.svg';
 
 if (process.env.NODE_ENV !== 'production') {
   require('../index.pug');

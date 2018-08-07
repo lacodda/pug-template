@@ -276,6 +276,13 @@ const productionConfig = merge([
       }
     }
   }),
+  parts.loadSvg({
+    include: paths.app,
+    options: {
+      extract: true,
+      spriteFilename: `${paths.svg}/sprite-.[hash:8].svg`,
+    }
+  }),
   parts.loadImages({
     include: paths.app,
     options: {
@@ -296,6 +303,7 @@ const developmentConfig = merge([
     port: process.env.PORT
   }),
   parts.loadCSS({ include: paths.app, use: [cssPreprocessorLoader] }),
+  parts.loadSvg({ include: paths.app }),
   parts.loadImages({ include: paths.app }),
   parts.loadJS({ include: paths.app })
 ]);
@@ -313,12 +321,13 @@ function getPaths({
   sourceDir = 'app',
   buildDir = 'dist',
   staticDir = '',
-  images = 'images',
-  fonts = 'fonts',
   js = 'scripts',
-  css = 'styles'
+  images = 'assets/images',
+  svg = 'assets/svg',
+  fonts = 'assets/fonts',
+  css = 'assets/styles'
 } = {}) {
-  const assets = { images, fonts, js, css };
+  const assets = { svg, images, fonts, js, css };
 
   return Object.keys(assets).reduce(
     (obj, assetName) => {

@@ -1,0 +1,14 @@
+@import 'fonts';
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: cornflowerblue;
+}
+
+.access-alarms {
+  width: 200px;
+  height: 200px;
+  //background: url('../svg/access_alarms.svg') no-repeat;
+  background: url('../images/lyrn.svg') no-repeat;
+  background-size: contain;
+}

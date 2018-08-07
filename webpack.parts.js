@@ -3,6 +3,7 @@ const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const SpriteLoaderPlugin = require('svg-sprite-loader/plugin');
 
 const publicPath = '/';
 
@@ -140,11 +141,28 @@ exports.extractCSS = ({ include, exclude, options, use = [] } = {}) => ({
   plugins: [new MiniCssExtractPlugin(options)],
 });
 
+exports.loadSvg = ({ include, exclude, options } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+        include,
+        exclude,
+        use: {
+          loader: 'svg-sprite-loader',
+          options,
+        },
+      },
+    ],
+  },
+  plugins: [new SpriteLoaderPlugin()],
+});
+
 exports.loadImages = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+        test: /\.(png|jpe?g|gif)$/i,
         include,
         exclude,
         use: {
@@ -160,7 +178,7 @@ exports.optimizeImages = ({ include, exclude } = {}) => ({
   module: {
     rules: [
       {
-        test: /\.(gif|png|jpe?g|svg)$/i,
+        test: /\.(png|jpe?g|gif)$/i,
 
         include,
         exclude,
