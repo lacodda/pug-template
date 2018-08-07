@@ -1,18 +1,14 @@
-import '../styles/main.scss'
-import icons from '../images/icons.svg'
+import '../styles/main.scss';
+// import icons from '../images/icons.svg';
 
 if (process.env.NODE_ENV !== 'production') {
-  require('../index.pug')
+  require('../index.pug');
 }
 
-function ready () {
-  // alert('DOM готов')
-  console.info('index.js - 10', icons)
-  const svg = `
-<img alt="ss" src="${icons}" width='200px' height='200px'>
-`
-  document.body.insertAdjacentHTML('afterBegin', svg)
-  // alert('Размеры картинки: ' + img.offsetWidth + 'x' + img.offsetHeight);
+function ready() {
+  // console.info('index.js - 10', icons);
+  // const svg = `<img alt="ss" src="${icons}" width='200px' height='200px'>`;
+  // document.body.insertAdjacentHTML('afterBegin', svg);
 }
 
-document.addEventListener('DOMContentLoaded', ready)
+document.addEventListener('DOMContentLoaded', ready);

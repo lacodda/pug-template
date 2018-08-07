@@ -9,13 +9,17 @@
     "url": "https://github.com/lacodda/pug-template"
   },
   "scripts": {
-    "start": "webpack-dev-server --env development",
-    "build": "rm -rf build && webpack --env production",
-    "server": "http-server build -p 8090",
-    "test-server": "npm run build && npm run server",
+    "start": "npm run serve:dev",
+    "serve:dev": "cross-env NODE_ENV=development node webpack/dev-server.js",
+    "serve:production": "cross-env NODE_ENV=production node webpack/spa-server.js",
+    "start-wds": "webpack-dev-server --env development",
+    "start-wds-nodemon": "nodemon --watch webpack.config.js --exec \"webpack-dev-server --open --hot --env development\"",
+    "build": "cross-env NODE_ENV=production webpack --env production --config webpack.config.js --progress",
+    "test-server": "npm run build && npm run serve:production",
     "analyze": "webpack-bundle-analyzer ./stats.json",
-    "build2": "webpack --env production --progress",
-    "start2": "nodemon --watch webpack.config.js --exec \"webpack-dev-server --open --hot --env development\""
+    "lint:scripts": "eslint --ext .js,.vue --ignore-path .gitignore .",
+    "generate-ssl": "node ./scripts/generate-ssl --hostname localhost",
+    "add-generated-ssl": "open /Applications/Utilities/Keychain\\ Access.app ssl/ssl.crt"
   },
   "devDependencies": {
     "@babel/cli": "7.0.0-beta.54",
@@ -26,6 +30,8 @@
     "babel-eslint": "^8.2.3",
     "babel-loader": "^8.0.0-beta",
     "clean-webpack-plugin": "^0.1.19",
+    "compression": "^1.7.3",
+    "cross-env": "^5.2.0",
     "css-loader": "^0.28.11",
     "cssnano": "^3.10.0",
     "eslint": "^4.19.1",
@@ -38,6 +44,7 @@
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-react": "^7.8.2",
     "eslint-plugin-standard": "^3.1.0",
+    "express": "^4.16.3",
     "fast-sass-loader": "^1.4.5",
     "file-loader": "^1.1.11",
     "friendly-errors-webpack-plugin": "^1.7.0",
@@ -66,6 +73,7 @@
     "webpack-dev-server": "^3.1.4",
     "webpack-manifest-plugin": "^2.0.2",
     "webpack-merge": "^4.1.2",
+    "webpack-serve": "^2.0.2",
     "webpack-stats-plugin": "0.2.1"
   },
   "browserslist": [
