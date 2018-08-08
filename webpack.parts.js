@@ -266,13 +266,13 @@ exports.minifyJS = (options) => ({
 });
 
 exports.page = ({
-                  path = '',
-                  template = require.resolve(
-                    'html-webpack-plugin/default_index.ejs'),
-                  title,
-                  entry,
-                  chunks,
-                } = {}) => ({
+  path = '',
+  template = require.resolve(
+    'html-webpack-plugin/default_index.ejs'),
+  title,
+  entry,
+  chunks,
+} = {}) => ({
   entry,
   plugins: [
     new HtmlWebpackPlugin({
