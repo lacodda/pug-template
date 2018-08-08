@@ -12,7 +12,7 @@ exports.publicPath = publicPath;
 exports.devServer = ({ host, port } = {}) => ({
   devServer: {
     watchOptions: {
-      ignored: /node_modules/,
+      ignored: /node_modules/
     },
     publicPath,
     // Enable history API fallback so HTML5 History API based
@@ -35,9 +35,9 @@ exports.devServer = ({ host, port } = {}) => ({
     // overlay: true is equivalent
     overlay: {
       errors: true,
-      warnings: false,
-    },
-  },
+      warnings: false
+    }
+  }
 });
 
 exports.loadPug = (options) => ({
@@ -47,16 +47,16 @@ exports.loadPug = (options) => ({
         test: /\.pug$/,
         use: [
           {
-            loader: 'html-loader',
+            loader: 'html-loader'
           },
           {
             loader: 'pug-html-loader',
-            options,
-          },
-        ],
-      },
-    ],
-  },
+            options
+          }
+        ]
+      }
+    ]
+  }
 });
 
 exports.lintJS = ({ include, exclude, options }) => ({
@@ -68,30 +68,30 @@ exports.lintJS = ({ include, exclude, options }) => ({
         exclude,
         enforce: 'pre',
         loader: 'eslint-loader',
-        options,
-      },
-    ],
-  },
+        options
+      }
+    ]
+  }
 });
 
 const sharedCSSLoaders = [
   {
     loader: 'css-loader',
     options: {
-      localIdentName: '[hash:base64:5]',
-    },
-  },
+      localIdentName: '[hash:base64:5]'
+    }
+  }
 ];
 
 exports.autoprefix = () => ({
   loader: 'postcss-loader',
   options: {
-    plugins: () => [require('autoprefixer')],
-  },
+    plugins: () => [require('autoprefixer')]
+  }
 });
 
 exports.purifyCSS = (options) => ({
-  plugins: [new PurifyCSSPlugin(options)],
+  plugins: [new PurifyCSSPlugin(options)]
 });
 
 exports.minifyCSS = ({ options }) => ({
@@ -100,9 +100,9 @@ exports.minifyCSS = ({ options }) => ({
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: options,
         canPrint: true // false for analyzer
-      }),
-    ],
-  },
+      })
+    ]
+  }
 });
 
 exports.loadCSS = ({ include, exclude, use } = {}) => ({
@@ -116,13 +116,13 @@ exports.loadCSS = ({ include, exclude, use } = {}) => ({
 
         use: [
           {
-            loader: 'style-loader',
+            loader: 'style-loader'
           },
-          ...sharedCSSLoaders.concat(use),
-        ],
-      },
-    ],
-  },
+          ...sharedCSSLoaders.concat(use)
+        ]
+      }
+    ]
+  }
 });
 
 exports.extractCSS = ({ include, exclude, options, use = [] } = {}) => ({
@@ -134,11 +134,11 @@ exports.extractCSS = ({ include, exclude, options, use = [] } = {}) => ({
         include,
         exclude,
 
-        use: [MiniCssExtractPlugin.loader, ...sharedCSSLoaders, ...use],
-      },
-    ],
+        use: [MiniCssExtractPlugin.loader, ...sharedCSSLoaders, ...use]
+      }
+    ]
   },
-  plugins: [new MiniCssExtractPlugin(options)],
+  plugins: [new MiniCssExtractPlugin(options)]
 });
 
 exports.loadSvg = ({ include, exclude, options } = {}) => ({
@@ -146,16 +146,20 @@ exports.loadSvg = ({ include, exclude, options } = {}) => ({
     rules: [
       {
         test: /\.svg$/,
+
         include,
         exclude,
-        use: {
-          loader: 'svg-sprite-loader',
-          options,
-        },
-      },
-    ],
+
+        use: [
+          {
+            loader: 'svg-sprite-loader',
+            options
+          }
+        ]
+      }
+    ]
   },
-  plugins: [new SpriteLoaderPlugin()],
+  plugins: [new SpriteLoaderPlugin()]
 });
 
 exports.loadImages = ({ include, exclude, options } = {}) => ({
@@ -167,11 +171,11 @@ exports.loadImages = ({ include, exclude, options } = {}) => ({
         exclude,
         use: {
           loader: 'url-loader',
-          options,
-        },
-      },
-    ],
-  },
+          options
+        }
+      }
+    ]
+  }
 });
 
 exports.optimizeImages = ({ include, exclude } = {}) => ({
@@ -192,7 +196,7 @@ exports.optimizeImages = ({ include, exclude } = {}) => ({
             // optimizationLevel: 7,
 
             gifsicle: {
-              interlaced: false,
+              interlaced: false
             },
 
             /*
@@ -206,13 +210,13 @@ exports.optimizeImages = ({ include, exclude } = {}) => ({
 
             pngquant: {
               quality: '65-90',
-              speed: 4,
-            },
-          },
-        },
-      },
-    ],
-  },
+              speed: 4
+            }
+          }
+        }
+      }
+    ]
+  }
 });
 
 exports.loadFonts = ({ include, exclude, options } = {}) => ({
@@ -227,11 +231,11 @@ exports.loadFonts = ({ include, exclude, options } = {}) => ({
 
         use: {
           loader: 'file-loader',
-          options,
-        },
-      },
-    ],
-  },
+          options
+        }
+      }
+    ]
+  }
 });
 
 exports.loadJS = ({ include, exclude, options } = {}) => ({
@@ -244,33 +248,32 @@ exports.loadJS = ({ include, exclude, options } = {}) => ({
         exclude,
 
         loader: 'babel-loader',
-        options,
-      },
-    ],
-  },
+        options
+      }
+    ]
+  }
 });
 
 exports.minifyJS = (options) => ({
   optimization: {
-    minimizer: [new UglifyJsPlugin(options)],
-  },
+    minimizer: [new UglifyJsPlugin(options)]
+  }
 });
 
 exports.page = ({
-                  path = '',
-                  template = require.resolve(
-                    'html-webpack-plugin/default_index.ejs'),
-                  title,
-                  entry,
-                  chunks,
-                } = {}) => ({
+  path = '',
+  template = require.resolve('html-webpack-plugin/default_index.ejs'),
+  title,
+  entry,
+  chunks
+} = {}) => ({
   entry,
   plugins: [
     new HtmlWebpackPlugin({
       filename: `${path && path + '/'}index.html`,
       template,
       title,
-      chunks,
-    }),
-  ],
+      chunks
+    })
+  ]
 });

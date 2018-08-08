@@ -7,8 +7,6 @@ const config = require('../webpack.config');
 
 const argv = {};
 const env = process.env.NODE_ENV;
-console.log(config(env));
-console.log(env);
 
 serve(argv, {
   ...config(env),

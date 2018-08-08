@@ -187,6 +187,14 @@ const commonConfig = merge([
     options: {
       name: `${paths.fonts}/[name].[hash:8].[ext]`
     }
+  }),
+  parts.loadSvg({
+    include: paths.app,
+    options: {
+      extract: true,
+      spriteFilename: `${paths.svg}/sprite.[hash:8].svg`,
+      esModule: false
+    }
   })
 ]);
 
@@ -276,13 +284,6 @@ const productionConfig = merge([
       }
     }
   }),
-  parts.loadSvg({
-    include: paths.app,
-    options: {
-      extract: true,
-      spriteFilename: `${paths.svg}/sprite-.[hash:8].svg`,
-    }
-  }),
   parts.loadImages({
     include: paths.app,
     options: {
@@ -303,7 +304,6 @@ const developmentConfig = merge([
     port: process.env.PORT
   }),
   parts.loadCSS({ include: paths.app, use: [cssPreprocessorLoader] }),
-  parts.loadSvg({ include: paths.app }),
   parts.loadImages({ include: paths.app }),
   parts.loadJS({ include: paths.app })
 ]);

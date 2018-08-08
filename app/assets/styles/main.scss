@@ -6,9 +6,10 @@ body {
 }
 
 .access-alarms {
-  width: 200px;
-  height: 200px;
-  //background: url('../svg/access_alarms.svg') no-repeat;
-  background: url('../images/lyrn.svg') no-repeat;
-  background-size: contain;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background-color: rgb(0, 110, 255);
+  -webkit-mask-image: url('../svg/access_alarms.svg');
+  mask-image: url('../svg/access_alarms.svg');
 }
