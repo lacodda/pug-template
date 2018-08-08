@@ -118,7 +118,7 @@ const lintJSOptions = {
   fix: true,
   cache: true,
 
-  formatter: require('eslint-friendly-formatter')
+  formatter: require('eslint-friendly-formatter'),
 };
 
 /*
@@ -146,7 +146,7 @@ const paths = getPaths();
 const lintStylesOptions = {
   context: path.resolve(__dirname, `${paths.app}/styles`),
   syntax: 'scss',
-  emitErrors: false
+  emitErrors: false,
   // fix: true,
 };
 
@@ -157,45 +157,45 @@ const commonConfig = merge([
     context: paths.app,
     resolve: {
       unsafeCache: true,
-      symlinks: false
+      symlinks: false,
     },
     entry: `${paths.app}/scripts`,
     output: {
       path: paths.build,
-      publicPath: parts.publicPath
+      publicPath: parts.publicPath,
     },
     stats: {
       warningsFilter: (warning) => warning.includes('entrypoint size limit'),
       children: false,
-      modules: false
+      modules: false,
     },
     plugins: [
       new HtmlPlugin({
-        template: './index.pug'
+        template: './index.pug',
       }),
       new FriendlyErrorsPlugin(),
-      new StylelintPlugin(lintStylesOptions)
+      new StylelintPlugin(lintStylesOptions),
     ],
     module: {
-      noParse: /\.min\.js/
-    }
+      noParse: /\.min\.js/,
+    },
   },
   parts.loadPug(),
   parts.lintJS({ include: paths.app, options: lintJSOptions }),
   parts.loadFonts({
     include: paths.app,
     options: {
-      name: `${paths.fonts}/[name].[hash:8].[ext]`
-    }
+      name: `${paths.fonts}/[name].[hash:8].[ext]`,
+    },
   }),
   parts.loadSvg({
     include: paths.app,
     options: {
       extract: true,
       spriteFilename: `${paths.svg}/sprite.[hash:8].svg`,
-      esModule: false
-    }
-  })
+      esModule: false,
+    },
+  }),
 ]);
 
 const productionConfig = merge([
@@ -203,13 +203,13 @@ const productionConfig = merge([
     mode: 'production',
     optimization: {
       splitChunks: {
-        chunks: 'all'
+        chunks: 'all',
       },
-      runtimeChunk: 'single'
+      runtimeChunk: 'single',
     },
     output: {
       chunkFilename: `${paths.js}/[name].[chunkhash:8].js`,
-      filename: `${paths.js}/[name].[chunkhash:8].js`
+      filename: `${paths.js}/[name].[chunkhash:8].js`,
     },
     performance: {
       hints: 'warning', // 'error' or false are valid too
@@ -220,8 +220,8 @@ const productionConfig = merge([
       new StatsWriterPlugin({ fields: null, filename: '../stats.json' }),
       new webpack.HashedModuleIdsPlugin(),
       new ManifestPlugin(),
-      new CleanPlugin(paths.build)
-    ]
+      new CleanPlugin(paths.build),
+    ],
   },
   parts.minifyJS({
     uglifyOptions: {
@@ -231,7 +231,7 @@ const productionConfig = merge([
         // into invalid ecma 5 code. This is why the 'compress' and 'output'
         // sections only apply transformations that are ecma 5 safe
         // https://github.com/facebook/create-react-app/pull/4234
-        ecma: 8
+        ecma: 8,
       },
       compress: {
         ecma: 5,
@@ -240,72 +240,74 @@ const productionConfig = merge([
         // https://github.com/facebook/create-react-app/issues/2376
         // Pending further investigation:
         // https://github.com/mishoo/UglifyJS2/issues/2011
-        comparisons: false
+        comparisons: false,
       },
       mangle: {
-        safari10: true
+        safari10: true,
       },
       output: {
         ecma: 5,
         comments: false,
         // Turned on because emoji and regex is not minified properly using default
         // https://github.com/facebook/create-react-app/issues/2488
-        ascii_only: true
-      }
+        ascii_only: true,
+      },
     },
     // Use multi-process parallel running to improve the build speed
     // Default number of concurrent runs: os.cpus().length - 1
     parallel: true,
     // Enable file caching
-    cache: true
+    cache: true,
   }),
   parts.loadJS({
     include: paths.app,
     options: {
-      cacheDirectory: true
-    }
+      cacheDirectory: true,
+    },
   }),
   parts.extractCSS({
     include: paths.app,
     use: [parts.autoprefix(), cssPreprocessorLoader],
     options: {
       filename: `${paths.css}/[name].[contenthash:8].css`,
-      chunkFilename: `${paths.css}/[id].[contenthash:8].css`
-    }
+      chunkFilename: `${paths.css}/[id].[contenthash:8].css`,
+    },
   }),
   parts.purifyCSS({
     paths: glob.sync(`${paths.app}/**/*.+(pug|js)`, { nodir: true }),
-    styleExtensions: ['.css', '.scss']
+    styleExtensions: ['.css', '.scss'],
   }),
   parts.minifyCSS({
     options: {
       discardComments: {
-        removeAll: true
-      }
-    }
+        removeAll: true,
+      },
+    },
   }),
   parts.loadImages({
     include: paths.app,
     options: {
       limit: 15000,
-      name: `${paths.images}/[name].[hash:8].[ext]`
-    }
+      name: `${paths.images}/[name].[hash:8].[ext]`,
+    },
   }),
   // should go after loading images
-  parts.optimizeImages()
+  // FIXME: images are encoded in base64 with "optimizeImages"
+  // parts.optimizeImages(),
 ]);
 
 const developmentConfig = merge([
   {
-    mode: 'development'
+    mode: 'development',
   },
   parts.devServer({
     host: process.env.HOST,
-    port: process.env.PORT
+    port: process.env.PORT,
   }),
-  parts.loadCSS({ include: paths.app, use: [cssPreprocessorLoader] }),
+  parts.loadCSS(
+    { include: paths.app, use: [parts.autoprefix(), cssPreprocessorLoader] }),
   parts.loadImages({ include: paths.app }),
-  parts.loadJS({ include: paths.app })
+  parts.loadJS({ include: paths.app }),
 ]);
 
 module.exports = (env) => {
@@ -313,7 +315,7 @@ module.exports = (env) => {
 
   return merge(
     commonConfig,
-    env === 'production' ? productionConfig : developmentConfig
+    env === 'production' ? productionConfig : developmentConfig,
   );
 };
 
@@ -325,7 +327,7 @@ function getPaths({
   images = 'assets/images',
   svg = 'assets/svg',
   fonts = 'assets/fonts',
-  css = 'assets/styles'
+  css = 'assets/styles',
 } = {}) {
   const assets = { svg, images, fonts, js, css };
 
@@ -340,7 +342,7 @@ function getPaths({
     {
       app: path.join(__dirname, sourceDir),
       build: path.join(__dirname, buildDir),
-      staticDir
-    }
+      staticDir,
+    },
   );
 }
