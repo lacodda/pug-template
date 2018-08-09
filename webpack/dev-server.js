@@ -11,15 +11,11 @@ const env = process.env.NODE_ENV;
 serve(argv, {
   ...config(env),
   open: 'chrome',
-  clipboard: false
-  // port: 8888,
-  // http2: true,
-  // https: {
-  //   key: readFileSync(resolve(__dirname, '../ssl/ssl.key')),
-  //   cert: readFileSync(resolve(__dirname, '../ssl/ssl.crt')),
-  // },
-}).then((server) => {
-  server.on('listening', ({ serv, opt }) => {
-    console.log('happy fun time');
-  });
+  clipboard: false,
+  port: 8888,
+  http2: true,
+  https: {
+    key: readFileSync(resolve(__dirname, '../ssl/ssl.key')),
+    cert: readFileSync(resolve(__dirname, '../ssl/ssl.crt')),
+  },
 });

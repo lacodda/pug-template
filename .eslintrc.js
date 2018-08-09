@@ -6,7 +6,10 @@ module.exports = {
     node: true
   },
   plugins: ['import', 'promise', 'compat', 'node'],
-  extends: ['plugin:promise/recommended', 'standard'],
+  extends: [
+    'plugin:promise/recommended',
+    'airbnb-base',
+  ],
   parser: 'babel-eslint',
   parserOptions: {
     sourceType: 'module',
@@ -18,6 +21,11 @@ module.exports = {
     allowImportExportEverywhere: true
   },
   rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+/*  
+    'semi': ['error', 'always'],
+    'curly': 0,
     'promise/always-return': 0,
     'promise/avoid-new': 0,
     'compat/compat': 1,
@@ -31,12 +39,6 @@ module.exports = {
     'import/export': 2,
     'comma-dangle': ['error', 'only-multiline'],
     'space-before-function-paren': ['error', 'never'],
-    semi: ['error', 'always'],
-    curly: 0,
-    'no-console':
-      process.env.NODE_ENV === 'production'
-        ? ['error']
-        : ['error', { allow: ['log', 'info', 'warn', 'error'] }],
-    'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0
+*/
   }
 };
