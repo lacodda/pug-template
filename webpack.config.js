@@ -132,19 +132,19 @@ const lintJSOptions = {
   getPaths({ css: '' })
 
   Defaults values:
-     sourceDir - 'app',
+     sourceDir - 'src',
       buildDir - 'build',
      staticDir - '',
 
         images - 'images',
          fonts - 'fonts',
            css - 'styles',
-            js - 'scripts'
+            js - 'js'
 */
 const paths = getPaths();
 
 const lintStylesOptions = {
-  context: path.resolve(__dirname, `${paths.app}/styles`),
+  context: path.resolve(__dirname, `${paths.src}/styles`),
   syntax: 'scss',
   emitErrors: false,
   // fix: true,
@@ -154,18 +154,18 @@ const cssPreprocessorLoader = { loader: 'fast-sass-loader' };
 
 const commonConfig = merge([
   {
-    context: paths.app,
+    context: paths.src,
     resolve: {
       unsafeCache: true,
       symlinks: false,
     },
-    entry: `${paths.app}/scripts`,
+    entry: `${paths.src}/js`,
     output: {
       path: paths.build,
       publicPath: parts.publicPath,
     },
     stats: {
-      warningsFilter: (warning) => warning.includes('entrypoint size limit'),
+      warningsFilter: warning => warning.includes('entrypoint size limit'),
       children: false,
       modules: false,
     },
@@ -181,20 +181,20 @@ const commonConfig = merge([
     },
   },
   parts.loadPug(),
-  parts.lintJS({ include: paths.app, options: lintJSOptions }),
+  parts.lintJS({ include: paths.src, options: lintJSOptions }),
   parts.loadFonts({
-    include: paths.app,
+    include: paths.src,
     options: {
       name: `${paths.fonts}/[name].[hash:8].[ext]`,
     },
   }),
   parts.loadSvg({
-    include: paths.app,
-    options: {
-      extract: true,
-      spriteFilename: `${paths.svg}/sprite.[hash:8].svg`,
-      esModule: false,
-    },
+    // include: paths.src,
+    // options: {
+    //   extract: true,
+    //   spriteFilename: `${paths.svg}/sprite.[hash:8].svg`,
+    //   esModule: false,
+    // },
   }),
 ]);
 
@@ -214,7 +214,7 @@ const productionConfig = merge([
     performance: {
       hints: 'warning', // 'error' or false are valid too
       maxEntrypointSize: 100000, // in bytes
-      maxAssetSize: 450000 // in bytes
+      maxAssetSize: 450000, // in bytes
     },
     plugins: [
       new StatsWriterPlugin({ fields: null, filename: '../stats.json' }),
@@ -260,13 +260,13 @@ const productionConfig = merge([
     cache: true,
   }),
   parts.loadJS({
-    include: paths.app,
+    include: paths.src,
     options: {
       cacheDirectory: true,
     },
   }),
   parts.extractCSS({
-    include: paths.app,
+    include: paths.src,
     use: [parts.autoprefix(), cssPreprocessorLoader],
     options: {
       filename: `${paths.css}/[name].[contenthash:8].css`,
@@ -274,7 +274,7 @@ const productionConfig = merge([
     },
   }),
   parts.purifyCSS({
-    paths: glob.sync(`${paths.app}/**/*.+(pug|js)`, { nodir: true }),
+    paths: glob.sync(`${paths.src}/**/*.+(pug|js)`, { nodir: true }),
     styleExtensions: ['.css', '.scss'],
   }),
   parts.minifyCSS({
@@ -285,7 +285,7 @@ const productionConfig = merge([
     },
   }),
   parts.loadImages({
-    include: paths.app,
+    include: paths.src,
     options: {
       limit: 15000,
       name: `${paths.images}/[name].[hash:8].[ext]`,
@@ -305,9 +305,9 @@ const developmentConfig = merge([
     port: process.env.PORT,
   }),
   parts.loadCSS(
-    { include: paths.app, use: [parts.autoprefix(), cssPreprocessorLoader] }),
-  parts.loadImages({ include: paths.app }),
-  parts.loadJS({ include: paths.app }),
+    { include: paths.src, use: [parts.autoprefix(), cssPreprocessorLoader] }),
+  parts.loadImages({ include: paths.src }),
+  parts.loadJS({ include: paths.src }),
 ]);
 
 module.exports = (env) => {
@@ -320,14 +320,14 @@ module.exports = (env) => {
 };
 
 function getPaths({
-  sourceDir = 'app',
+  sourceDir = 'src',
   buildDir = 'dist',
   staticDir = '',
-  js = 'scripts',
+  js = 'js',
+  css = 'styles',
   images = 'assets/images',
   svg = 'assets/svg',
   fonts = 'assets/fonts',
-  css = 'assets/styles',
 } = {}) {
   const assets = { svg, images, fonts, js, css };
 
@@ -340,7 +340,7 @@ function getPaths({
       return obj;
     },
     {
-      app: path.join(__dirname, sourceDir),
+      src: path.join(__dirname, sourceDir),
       build: path.join(__dirname, buildDir),
       staticDir,
     },

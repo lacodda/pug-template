@@ -1,6 +1,12 @@
-import '../assets/styles/main.scss';
+import '../styles/main.scss';
 /* eslint-disable-next-line */
 import lyrn from '../assets/images/lyrn.svg';
+
+// Import all svg icons from assets/svg
+const req = require.context('../assets/svg', true, /\.svg$/);
+req.keys().forEach((key) => {
+  req(key);
+});
 
 if (process.env.NODE_ENV !== 'production') {
   /* eslint-disable-next-line */

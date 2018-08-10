@@ -4,9 +4,9 @@
 
 header
   h1 Hello world!
-  span.access-alarms
-  figure
-    img(src='./assets/images/lyrn.svg' alt='lyrn logo' width='200')
+  svg
+    use(xlink:href="#lyrn")
+  +svg('access_alarms')
+  +svg('add', 20, 'red')
+  +svg('add', 20, 'blue')
   .lyrn-logo
-  figure
-    img(src='./assets/images/lyrn.png' alt='lyrn logo' width='200')

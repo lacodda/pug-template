@@ -146,7 +146,24 @@ exports.extractCSS = ({ include, exclude, options, use = [] } = {}) => ({
   plugins: [new MiniCssExtractPlugin(options)],
 });
 
-exports.loadSvg = ({ include, exclude, options } = {}) => ({
+exports.loadSvg = ({ include, exclude } = {}) => ({
+  module: {
+    rules: [
+      {
+        test: /\.svg$/,
+
+        include,
+        exclude,
+
+        use: [
+          'svg-sprite-loader',
+        ],
+      },
+    ],
+  },
+});
+
+exports.extractSvg = ({ include, exclude, options } = {}) => ({
   module: {
     rules: [
       {

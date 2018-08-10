@@ -1,0 +1,19 @@
+@import 'fonts';
+
+body {
+  font-family: 'Open Sans', sans-serif;
+  background-color: cornflowerblue;
+}
+
+.lyrn-logo {
+  display: block;
+  width: 200px;
+  height: 200px;
+  background: url("../assets/images/lyrn.png") no-repeat;
+  background-size: contain;
+}
+
+.icon {
+  display: inline-block;
+  stroke-width: 0;
+}
