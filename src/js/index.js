@@ -8,9 +8,14 @@ req.keys().forEach((key) => {
   req(key);
 });
 
-if (process.env.NODE_ENV !== 'production') {
+if (process.env.NODE_ENV === 'production') {
   /* eslint-disable-next-line */
-  require('../index.pug');
+  // require('../index.pug');
+  console.log('production');
+}
+
+if (process.env.NODE_ENV === 'development') {
+  console.log('development');
 }
 
 function ready() {

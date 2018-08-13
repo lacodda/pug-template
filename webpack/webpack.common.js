@@ -1,107 +1,9 @@
-// const { resolve, join } = require('path');
-
-// const webpack = require('webpack');
-// const HtmlWebpackPlugin = require('html-webpack-plugin');
-// const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const merge = require('webpack-merge');
-// const babel = require('./webpack/modules/babel');
-// const pug = require('./webpack/modules/pug');
-// const devServer = require('./webpack/modules/devserver');
-// const style = require('./webpack/modules/style');
-// const styleExtract = require('./webpack/modules/style.extract');
-// const uglifyJs = require('./webpack/modules/js.uglify');
-// const images = require('./webpack/modules/images');
-// const svg = require('./webpack/modules/svg');
-// const html = require('./webpack/modules/html');
-// const fonts = require('./webpack/modules/fonts');
-// const favicons = require('./webpack/modules/favicons');
-
-// const PATHS = {
-//   source: join(__dirname, 'src'),
-//   build: join(__dirname, 'build'),
-// };
-
-// const env = process.env.NODE_ENV;
-// const minify = env === 'production';
-// const sourceMap = env === 'development';
-
-// const alias = (dir = '') => resolve(join(__dirname, dir));
-// const assetsPath = (dir = '') => path.posix.join('static', dir);
-// const createLintingRule = () => ({
-//   test: /\.(js|vue)$/,
-//   loader: 'eslint-loader',
-//   enforce: 'pre',
-//   include: [alias('src'), alias('test')],
-//   exclude: [alias('src/tests')],
-//   options: {
-//     formatter: require('eslint-friendly-formatter'),
-//     emitWarning: true,
-//   },
-// });
-
-// const common = merge([
-//   {
-//     stats: {
-//       colors: true,
-//       version: true,
-//     },
-//     entry: {
-//       index: alias('src/js/index.js'),
-//     },
-//     output: {
-//       path: PATHS.build,
-//       filename: 'js/[name].js',
-//     },
-//     plugins: [
-//       new HtmlWebpackPlugin({
-//         filename: 'index.html',
-//         chunks: ['index', 'common'],
-//         template: PATHS.source + '/templates/index.pug',
-//       }),
-//       // new webpack.optimize.splitChunks({
-//       //   name: 'common',
-//       // }),
-//       new CopyWebpackPlugin([
-//         {
-//           from: PATHS.source + '/static',
-//           to: PATHS.build + '/static',
-//         }]),
-//     ],
-//   },
-//   babel(),
-//   pug(),
-//   images(),
-//   // svg(),
-//   html(),
-//   fonts(),
-// ]);
-
-// module.exports = function (env) {
-//   if (env === 'production') {
-//     return merge([
-//       common,
-//       favicons,
-//       styleExtract(),
-//       // uglifyJs(),
-//     ]);
-//   }
-//   if (env === 'development') {
-//     return merge([
-//       common,
-//       devServer(),
-//       style(),
-//     ]);
-//   }
-// };
-
 const path = require('path');
 const merge = require('webpack-merge');
 const HtmlPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
-
-const { getPaths } = require('./utils');
-
+const { getPaths, generateHtmlPlugins } = require('./utils');
 const parts = require('./webpack.parts');
 
 const lintJSOptions = {
@@ -128,8 +30,8 @@ const lintJSOptions = {
   getPaths({ css: '' })
 
   Defaults values:
-     sourceDir - 'app',
-      buildDir - 'build',
+     sourceDir - 'src',
+      buildDir - 'dist',
      staticDir - '',
 
         images - 'images',
@@ -146,6 +48,9 @@ const lintStylesOptions = {
   // fix: true,
 };
 
+// Call our function on our views directory.
+const htmlPlugins = generateHtmlPlugins('../src/templates/pages');
+
 module.exports = merge([
   {
     context: paths.app,
@@ -153,8 +58,6 @@ module.exports = merge([
       unsafeCache: true,
       symlinks: false,
     },
-    // entry: path.resolve(paths.app, 'js', 'index.js'),
-    // entry: './js/index.js',
     entry: {
       app: './js/index.js',
     },
@@ -168,9 +71,7 @@ module.exports = merge([
       modules: false,
     },
     plugins: [
-      new HtmlPlugin({
-        template: './index.pug',
-      }),
+      ...htmlPlugins,
       new FriendlyErrorsPlugin(),
       new StylelintPlugin(lintStylesOptions),
     ],
@@ -186,7 +87,7 @@ module.exports = merge([
       name: `${paths.fonts}/[name].[hash:8].[ext]`,
     },
   }),
-  // parts.loadSvg({
+  // parts.extractSvg({
   //   include: paths.app,
   //   options: {
   //     extract: true,
