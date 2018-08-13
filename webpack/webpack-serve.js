@@ -3,7 +3,7 @@
 const { readFileSync } = require('fs');
 const { resolve } = require('path');
 const serve = require('webpack-serve');
-const config = require('../webpack.config');
+const config = require('./webpack.dev');
 
 const argv = {};
 const env = process.env.NODE_ENV;

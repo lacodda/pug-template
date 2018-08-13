@@ -40,7 +40,7 @@ exports.devServer = ({ host, port } = {}) => ({
   },
 });
 
-exports.loadPug = (options) => ({
+exports.loadPug = options => ({
   module: {
     rules: [
       {
@@ -90,7 +90,7 @@ exports.autoprefix = () => ({
   },
 });
 
-exports.purifyCSS = (options) => ({
+exports.purifyCSS = options => ({
   plugins: [new PurifyCSSPlugin(options)],
 });
 
@@ -99,7 +99,7 @@ exports.minifyCSS = ({ options }) => ({
     minimizer: [
       new OptimizeCSSAssetsPlugin({
         cssProcessorOptions: options,
-        canPrint: true // false for analyzer
+        canPrint: true, // false for analyzer
       }),
     ],
   },
@@ -145,6 +145,8 @@ exports.extractCSS = ({ include, exclude, options, use = [] } = {}) => ({
   },
   plugins: [new MiniCssExtractPlugin(options)],
 });
+
+exports.cssPreprocessorLoader = { loader: 'fast-sass-loader' };
 
 exports.loadSvg = ({ include, exclude } = {}) => ({
   module: {
@@ -276,7 +278,7 @@ exports.loadJS = ({ include, exclude, options } = {}) => ({
   },
 });
 
-exports.minifyJS = (options) => ({
+exports.minifyJS = options => ({
   optimization: {
     minimizer: [new UglifyJsPlugin(options)],
   },
@@ -285,7 +287,8 @@ exports.minifyJS = (options) => ({
 exports.page = ({
   path = '',
   template = require.resolve(
-    'html-webpack-plugin/default_index.ejs'),
+    'html-webpack-plugin/default_index.ejs',
+  ),
   title,
   entry,
   chunks,
