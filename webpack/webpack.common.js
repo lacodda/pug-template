@@ -40,6 +40,9 @@ const lintJSOptions = {
 */
 const paths = getPaths();
 
+console.log(paths);
+
+
 const lintStylesOptions = {
   context: path.resolve(__dirname, `${paths.app}/styles`),
   syntax: 'scss',

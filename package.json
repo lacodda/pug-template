@@ -30,10 +30,8 @@
     "analyze": "webpack-bundle-analyzer ./stats.json",
     "lint:scripts": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "generate-ssl": "node ./scripts/generate-ssl --hostname localhost",
-    "add-generated-ssl": "open /Applications/Utilities/Keychain\\ Access.app ssl/ssl.crt"
-  },
-  "engines": {
-    "node": ">=8"
+    "add-generated-ssl": "open /Applications/Utilities/Keychain\\ Access.app ssl/ssl.crt",
+    "test": "node webpack/webpack-serve"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-rc.1",
@@ -88,5 +86,12 @@
     "webpack-merge": "^4.1.4",
     "webpack-stats-plugin": "^0.2.1"
   },
-  "dependencies": {}
+  "dependencies": {},
+  "engines": {
+    "node": ">=8"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions"
+  ]
 }

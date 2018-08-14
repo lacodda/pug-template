@@ -1,20 +1,25 @@
-const { join, resolve } = require('path');
-
-module.exports = () => ({
-  root: resolve(join(__dirname, '..')),
+module.exports = {
+  root: '..',
   source: 'src',
   dist: 'dist',
   static: '',
-  js: 'js',
   assets: {
+    js: {
+      source: 'js',
+      dist: 'assets/js',
+    },
     styles: {
       source: 'scss',
-      dist: 'css',
+      dist: 'assets/css',
     },
-    images: 'images',
+    images: 'assets/images',
     svg: {
-      source: 'svg',
-      dist: 'images',
+      source: 'assets/svg',
+      dist: 'assets/images',
+    },
+    fonts: {
+      source: 'assets/fonts',
+      dist: 'assets/fonts',
     },
   },
-});
+};
