@@ -1,6 +1,5 @@
 const path = require('path');
 const merge = require('webpack-merge');
-const HtmlPlugin = require('html-webpack-plugin');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const { getPaths, generateHtmlPlugins } = require('./utils');
