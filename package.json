@@ -30,8 +30,7 @@
     "analyze": "webpack-bundle-analyzer ./stats.json",
     "lint:scripts": "eslint --ext .js,.vue --ignore-path .gitignore .",
     "generate-ssl": "node ./scripts/generate-ssl --hostname localhost",
-    "add-generated-ssl": "open /Applications/Utilities/Keychain\\ Access.app ssl/ssl.crt",
-    "test": "node webpack/webpack-serve"
+    "add-generated-ssl": "open /Applications/Utilities/Keychain\\ Access.app ssl/ssl.crt"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-rc.1",

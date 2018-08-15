@@ -1,9 +1,12 @@
-const path = require('path');
+const { resolve } = require('path');
 const merge = require('webpack-merge');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const StylelintPlugin = require('stylelint-webpack-plugin');
 const { getPaths, generateHtmlPlugins } = require('./utils');
 const parts = require('./webpack.parts');
+const config = require('./config');
+
+const paths = getPaths(config);
 
 const lintJSOptions = {
   emitWarning: true,
@@ -18,53 +21,26 @@ const lintJSOptions = {
   formatter: require('eslint-friendly-formatter'),
 };
 
-/*
-  To move all assets to some static folder
-  getPaths({ staticDir: 'some-name' })
-
-  To rename asset build folder
-  getPaths({ js: 'some-name' })
-
-  To move assets to the root build folder
-  getPaths({ css: '' })
-
-  Defaults values:
-     sourceDir - 'src',
-      buildDir - 'dist',
-     staticDir - '',
-
-        images - 'images',
-         fonts - 'fonts',
-           css - 'styles',
-            js - 'scripts'
-*/
-const paths = getPaths();
-
-console.log(paths);
-
-
 const lintStylesOptions = {
-  context: path.resolve(__dirname, `${paths.app}/styles`),
+  context: paths.css.src,
   syntax: 'scss',
   emitErrors: false,
   // fix: true,
 };
 
-// Call our function on our views directory.
-const htmlPlugins = generateHtmlPlugins('../src/templates/pages');
+// Find all pages on pages directory
+const htmlPlugins = generateHtmlPlugins(paths.pages);
 
 module.exports = merge([
   {
-    context: paths.app,
+    context: paths.src,
     resolve: {
       unsafeCache: true,
       symlinks: false,
     },
-    entry: {
-      app: './js/index.js',
-    },
+    entry: paths.entry,
     output: {
-      path: paths.build,
+      path: paths.dist,
       publicPath: parts.publicPath,
     },
     stats: {
@@ -82,18 +58,18 @@ module.exports = merge([
     },
   },
   parts.loadPug(),
-  parts.lintJS({ include: paths.app, options: lintJSOptions }),
+  parts.lintJS({ include: paths.js.src, options: lintJSOptions }),
   parts.loadFonts({
-    include: paths.app,
+    include: paths.fonts.src,
     options: {
-      name: `${paths.fonts}/[name].[hash:8].[ext]`,
+      name: `${paths.fonts.dist}/[name].[hash:8].[ext]`,
     },
   }),
   // parts.extractSvg({
   //   include: paths.app,
   //   options: {
   //     extract: true,
-  //     spriteFilename: `${paths.svg}/sprite.[hash:8].svg`,
+  //     spriteFilename: `${paths.svg.src}/sprite.[hash:8].svg`,
   //     esModule: false,
   //   },
   // }),

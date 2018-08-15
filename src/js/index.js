@@ -1,4 +1,4 @@
-import '../styles/main.scss';
+import '../scss/main.scss';
 /* eslint-disable-next-line */
 import lyrn from '../assets/images/lyrn.svg';
 

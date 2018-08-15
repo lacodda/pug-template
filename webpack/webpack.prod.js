@@ -7,8 +7,9 @@ const { StatsWriterPlugin } = require('webpack-stats-plugin');
 const common = require('./webpack.common.js');
 const parts = require('./webpack.parts');
 const { getPaths } = require('./utils');
+const config = require('./config');
 
-const paths = getPaths();
+const paths = getPaths(config);
 
 module.exports = merge(
   common,
@@ -21,8 +22,8 @@ module.exports = merge(
       runtimeChunk: 'single',
     },
     output: {
-      chunkFilename: `${paths.js}/[name].[chunkhash:8].js`,
-      filename: `${paths.js}/[name].[chunkhash:8].js`,
+      filename: `${paths.js.dist}/[name].[chunkhash:8].js`,
+      chunkFilename: `${paths.js.dist}/[name].[chunkhash:8].js`,
     },
     performance: {
       hints: 'warning', // 'error' or false are valid too
@@ -33,7 +34,7 @@ module.exports = merge(
       new StatsWriterPlugin({ fields: null, filename: '../stats.json' }),
       new webpack.HashedModuleIdsPlugin(),
       new ManifestPlugin(),
-      new CleanPlugin(paths.build),
+      new CleanPlugin(paths.dist),
     ],
   },
   parts.minifyJS({
@@ -73,21 +74,21 @@ module.exports = merge(
     cache: true,
   }),
   parts.loadJS({
-    include: paths.app,
+    include: paths.js.src,
     options: {
       cacheDirectory: true,
     },
   }),
   parts.extractCSS({
-    include: paths.app,
+    include: paths.css.src,
     use: [parts.autoprefix(), parts.cssPreprocessorLoader],
     options: {
-      filename: `${paths.css}/[name].[contenthash:8].css`,
-      chunkFilename: `${paths.css}/[id].[contenthash:8].css`,
+      filename: `${paths.css.dist}/[name].[contenthash:8].css`,
+      chunkFilename: `${paths.css.dist}/[id].[contenthash:8].css`,
     },
   }),
   parts.purifyCSS({
-    paths: glob.sync(`${paths.app}/**/*.+(pug|js)`, { nodir: true }),
+    paths: glob.sync(`${paths.src}/**/*.+(pug|js)`, { nodir: true }),
     styleExtensions: ['.css', '.scss'],
   }),
   parts.minifyCSS({
@@ -98,10 +99,10 @@ module.exports = merge(
     },
   }),
   parts.loadImages({
-    include: paths.app,
+    include: paths.img.src,
     options: {
       limit: 15000,
-      name: `${paths.images}/[name].[hash:8].[ext]`,
+      name: `${paths.img.dist}/[name].[hash:8].[ext]`,
     },
   }),
   // should go after loading images

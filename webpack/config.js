@@ -1,24 +1,27 @@
 module.exports = {
   root: '..',
-  source: 'src',
+  src: 'src',
   dist: 'dist',
-  static: '',
+  entry: {
+    app: 'js/index.js',
+  },
+  pages: 'templates/pages',
   assets: {
     js: {
-      source: 'js',
+      src: 'js',
       dist: 'assets/js',
     },
-    styles: {
-      source: 'scss',
+    css: {
+      src: 'scss',
       dist: 'assets/css',
     },
-    images: 'assets/images',
+    img: 'assets/images',
     svg: {
-      source: 'assets/svg',
+      src: 'assets/svg',
       dist: 'assets/images',
     },
     fonts: {
-      source: 'assets/fonts',
+      src: 'assets/fonts',
       dist: 'assets/fonts',
     },
   },
