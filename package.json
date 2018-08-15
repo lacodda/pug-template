@@ -87,10 +87,12 @@
   },
   "dependencies": {},
   "engines": {
-    "node": ">=8"
+    "node": ">= 8.0.0",
+    "npm": ">= 3.0.0"
   },
   "browserslist": [
     "> 1%",
-    "last 2 versions"
+    "last 2 versions",
+    "not ie <= 8"
   ]
 }
