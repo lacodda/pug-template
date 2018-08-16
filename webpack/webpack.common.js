@@ -28,7 +28,7 @@ const lintStylesOptions = {
   // fix: true,
 };
 
-// Find all pages on pages directory
+// get array of HTMLWebpackPlugin's
 const htmlPlugins = generateHtmlPlugins(paths.pages);
 
 module.exports = merge([
@@ -44,7 +44,7 @@ module.exports = merge([
       publicPath: parts.publicPath,
     },
     stats: {
-      warningsFilter: warning => warning.includes('entrypoint size limit'),
+      warningsFilter: (warning) => warning.includes('entrypoint size limit'),
       children: false,
       modules: false,
     },

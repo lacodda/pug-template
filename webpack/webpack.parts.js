@@ -40,6 +40,22 @@ exports.devServer = ({ host, port } = {}) => ({
   },
 });
 
+exports.loadHtml = options => ({
+  module: {
+    rules: [
+      {
+        test: /\.html$/,
+        use: [
+          {
+            loader: 'html-loader',
+            options,
+          },
+        ],
+      },
+    ],
+  },
+});
+
 exports.loadPug = options => ({
   module: {
     rules: [
